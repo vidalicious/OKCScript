@@ -7,9 +7,9 @@ from OkcoinSpotAPI import OKCoinSpot
 from OkcoinFutureAPI import OKCoinFuture
 
 #初始化apikey，secretkey,url
-apikey = 'XXXX'
-secretkey = 'XXXXX'
-okcoinRESTURL = 'www.okcoin.com'   #请求注意：国内账号需要 修改为 www.okcoin.cn  
+apikey = '884cde11-ec65-4af5-86b6-b9ddd7ca7b3c'
+secretkey = '3ABA8A337EB23E3EB62838A0906ED2AC'
+okcoinRESTURL = 'www.okcoin.cn'   #请求注意：国内账号需要 修改为 www.okcoin.cn
 
 #现货API
 okcoinSpot = OKCoinSpot(okcoinRESTURL,apikey,secretkey)
@@ -18,16 +18,16 @@ okcoinSpot = OKCoinSpot(okcoinRESTURL,apikey,secretkey)
 okcoinFuture = OKCoinFuture(okcoinRESTURL,apikey,secretkey)
 
 print (u' 现货行情 ')
-print (okcoinSpot.ticker('btc_usd'))
+print (okcoinSpot.ticker('ltc_cny'))
 
 print (u' 现货深度 ')
-print (okcoinSpot.depth('btc_usd'))
+print (okcoinSpot.depth('ltc_cny'))#btc_usd
 
 #print (u' 现货历史交易信息 ')
 #print (okcoinSpot.trades())
 
-#print (u' 用户现货账户信息 ')
-#print (okcoinSpot.userinfo())
+print (u' 用户现货账户信息 ')
+print (okcoinSpot.userinfo())
 
 #print (u' 现货下单 ')
 #print (okcoinSpot.trade('ltc_usd','buy','0.1','0.2'))

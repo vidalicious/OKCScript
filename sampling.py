@@ -52,7 +52,10 @@ mean30 = 0
 mean45 = 0
 mean60 = 0
 
-targetList = []
+targetList1 = []
+targetList2 = []
+targetList5 = []
+targetList10 = []
 
 #现货API
 okcoinSpot = OKCoinSpot(okcoinRESTURL, apikey, secretkey)
@@ -61,9 +64,21 @@ while True:
     lastPrice = getLastPrice(okcoinSpot, 'ltc_cny')
     print 'counter ', counter, 'last price ', lastPrice
 
-    targetList.insert(0, float(lastPrice))
-    if len(targetList) > 120:
-        targetList = targetList[:120]
+    targetList1.insert(0, float(lastPrice))
+    if len(targetList1) > 60 * 1 / oneTickTime:
+        targetList1 = targetList1[:60 * 1 / oneTickTime]
+
+    targetList2.insert(0, float(lastPrice))
+    if len(targetList2) > 60 * 2 / oneTickTime:
+        targetList2 = targetList2[:60 * 2 / oneTickTime]
+
+    targetList5.insert(0, float(lastPrice))
+    if len(targetList5) > 60 * 5 / oneTickTime:
+        targetList5 = targetList5[:60 * 5 / oneTickTime]
+
+    targetList10.insert(0, float(lastPrice))
+    if len(targetList10) > 60 * 10 / oneTickTime:
+        targetList10 = targetList10[:60 * 10 / oneTickTime]
 
     buy1 = getBuy1(okcoinSpot, 'ltc_cny')
     sell1 = getSell1(okcoinSpot, 'ltc_cny')
@@ -80,8 +95,17 @@ while True:
     mean45 = updateEMABy(float(lastPrice), ema45_K, mean45)
     mean60 = updateEMABy(float(lastPrice), ema60_K, mean60)
 
-    variance60 = getVarianceFromList(targetList, mean60)
-    sd60 = sqrt(variance60)
+    variance1 = getVarianceFromList(targetList1, mean1)
+    sd1 = sqrt(variance1)
+
+    variance2 = getVarianceFromList(targetList2, mean2)
+    sd2 = sqrt(variance2)
+
+    variance5 = getVarianceFromList(targetList5, mean5)
+    sd5 = sqrt(variance5)
+
+    variance10 = getVarianceFromList(targetList10, mean10)
+    sd10 = sqrt(variance10)
 
     lt = []
     lbuy1 = []
@@ -97,7 +121,10 @@ while True:
     l30 = []
     l45 = []
     l60 = []
-    lsd60 = []
+    lsd1 = []
+    lsd2 = []
+    lsd5 = []
+    lsd10 = []
 
     lIndex = []
 
@@ -115,7 +142,10 @@ while True:
     l30.append(mean30)
     l45.append(mean45)
     l60.append(mean60)
-    lsd60.append(sd60)
+    lsd1.append(sd1)
+    lsd2.append(sd2)
+    lsd5.append(sd5)
+    lsd10.append(sd10)
 
     lIndex.append(counter)
 
@@ -133,7 +163,10 @@ while True:
     s30 = pd.Series(l30, index=lIndex)
     s45 = pd.Series(l45, index=lIndex)
     s60 = pd.Series(l60, index=lIndex)
-    ssd60 = pd.Series(lsd60, index=lIndex)
+    ssd1 = pd.Series(lsd1, index=lIndex)
+    ssd2 = pd.Series(lsd2, index=lIndex)
+    ssd5 = pd.Series(lsd5, index=lIndex)
+    ssd10 = pd.Series(lsd10, index=lIndex)
 
     d = {"st" : st,
          "buy1" : sbuy1,
@@ -149,7 +182,10 @@ while True:
          "s30" : s30,
          "s45" : s45,
          "s60" : s60,
-         "sd60" : ssd60
+         "sd1" : ssd1,
+         "sd2" : ssd2,
+         "sd5" : ssd5,
+         "sd10" : ssd10
     }
 
     df = pd.DataFrame(d)

@@ -13,7 +13,7 @@ apikey = '884cde11-ec65-4af5-86b6-b9ddd7ca7b3c'
 secretkey = '3ABA8A337EB23E3EB62838A0906ED2AC'
 okcoinRESTURL = 'www.okcoin.cn'   #请求注意：国内账号需要 修改为 www.okcoin.cn
 
-oneTickTime = 1
+oneTickTime = 5
 counter = 0
 
 ema10sCount = 10 / oneTickTime #10秒
@@ -56,23 +56,14 @@ targetList = []
 
 #现货API
 okcoinSpot = OKCoinSpot(okcoinRESTURL, apikey, secretkey)
-lastPrice = getLastPrice(okcoinSpot, 'ltc_cny')
-
-print lastPrice
-
-buy = getBuy1(okcoinSpot, 'ltc_cny')
-print buy
-
-sell = getSell1(okcoinSpot, 'ltc_cny')
-print sell
 
 while True:
     lastPrice = getLastPrice(okcoinSpot, 'ltc_cny')
     print 'counter ', counter, 'last price ', lastPrice
 
     targetList.insert(0, float(lastPrice))
-    if len(targetList) > 60 * 60:
-        targetList = targetList[:60 * 60]
+    if len(targetList) > 120:
+        targetList = targetList[:120]
 
     buy1 = getBuy1(okcoinSpot, 'ltc_cny')
     sell1 = getSell1(okcoinSpot, 'ltc_cny')

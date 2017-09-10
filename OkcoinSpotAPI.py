@@ -33,7 +33,7 @@ class OKCoinSpot:
         if symbol:
             params = 'symbol=%(symbol)s' %{'symbol':symbol}
         return httpGet(self.__url,TRADES_RESOURCE,params)
-    
+
     #获取用户现货账户信息
     def userinfo(self):
         USERINFO_RESOURCE = "/api/v1/userinfo.do"
@@ -117,18 +117,11 @@ class OKCoinSpot:
            params['sign'] = buildMySign(params,self.__secretkey)
            return httpPost(self.__url,ORDER_HISTORY_RESOURCE,params)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
+#########################################################
+    #kline
+    def kline(self, symbol = '', type = ''):
+        TRADES_RESOURCE = "/api/v1/kline.do"
+        params=''
+        if symbol:
+            params = 'symbol=' + str(symbol) + '&' + 'type=' + str(type)
+        return httpGet(self.__url,TRADES_RESOURCE,params)

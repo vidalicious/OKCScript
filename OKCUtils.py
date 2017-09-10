@@ -46,3 +46,6 @@ def getVarianceFromList(list, mean):
 		return total / len(list)
 	else:
 		return 0
+
+#///////////////////////////////////////////////////////////
+def averageCandlestickClose

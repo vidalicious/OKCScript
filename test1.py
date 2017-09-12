@@ -34,10 +34,7 @@ def sampler():
 
 def trader():
     while True:
-        try:
-            
-        except Exception:
-            dummy = 0
+        dummy = 0
 # ===========================================================
 sampleThread = threading.Thread(target=sampler)
 sampleThread.setDaemon(True)

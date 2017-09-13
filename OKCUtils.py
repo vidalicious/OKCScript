@@ -48,4 +48,3 @@ def getVarianceFromList(list, mean):
 		return 0
 
 #///////////////////////////////////////////////////////////
-def averageCandlestickClose

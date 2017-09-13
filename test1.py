@@ -4,6 +4,7 @@
 
 from OkcoinSpotAPI import OKCoinSpot
 from OkcoinFutureAPI import OKCoinFuture
+from OKCUtils import *
 import time
 import threading
 import numpy as np
@@ -11,7 +12,7 @@ import numpy as np
 apikey = '884cde11-ec65-4af5-86b6-b9ddd7ca7b3c'
 secretkey = '3ABA8A337EB23E3EB62838A0906ED2AC'
 okcoinRESTURL = 'www.okcoin.cn'
-
+symbol = 'ltc_cny'
 okcoinSpot = OKCoinSpot(okcoinRESTURL, apikey, secretkey)
 
 # ================ trigger ========================
@@ -19,14 +20,22 @@ def sampler():
     oneTick = 3
     while True:
         try:
-            print('spot ticker')
-            print(okcoinSpot.ticker('ltc_cny'))
+            ticker = okcoinSpot.ticker(symbol)
+            depth = okcoinSpot.depth(symbol)
+            print('last', ticker['ticker']['last'], end='  ')
+            print('sell1', ticker['ticker']['sell'], end='  ')
+            print('buy1', ticker['ticker']['buy'])
+            print('spot ticker', ticker)
+            print('depth', depth)
+
+
 
             print('kline 5min')
-            arr5min = okcoinSpot.kline('ltc_cny', '1min')[-6:-1]
+            arr5min = okcoinSpot.kline(symbol, '1min')[-6:-1]
             aveClose = np.mean(arr5min, axis=0)[-2]  # timestamp, open, high, low, close, vol
             print(aveClose)
             print(arr5min)
+            print('finish...\n')
         except Exception:
             dummy = 0
         time.sleep(oneTick)

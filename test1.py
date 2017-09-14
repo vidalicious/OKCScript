@@ -18,24 +18,44 @@ okcoinSpot = OKCoinSpot(okcoinRESTURL, apikey, secretkey)
 # ================ trigger ========================
 def sampler():
     oneTick = 3
+    counter = 0
     while True:
         try:
             ticker = okcoinSpot.ticker(symbol)
             depth = okcoinSpot.depth(symbol)
             print('last', ticker['ticker']['last'], end='  ')
-            print('sell1', ticker['ticker']['sell'], end='  ')
-            print('buy1', ticker['ticker']['buy'])
-            print('spot ticker', ticker)
-            print('depth', depth)
+            print('sell1', depth['asks'][-1], end='  ')
+            print('buy1', depth['bids'][0])
+            # print('spot ticker', ticker)
+            # print('depth', depth)
 
+            kline_1min = okcoinSpot.kline(symbol, '1min')
+            MA_5min = np.mean(kline_1min[-6:-1], axis=0)[-2]
+            print('MA 5min  ', MA_5min, end='  ')
+            MA_10min = np.mean(kline_1min[-11:-1], axis=0)[-2]
+            print('MA 10min  ', MA_10min)
 
+            data = {
+                'last':dataNode(ticker['ticker']['last'], counter),
+                'sell1':dataNode(depth['asks'][-1][0], counter),
+                'buy1':dataNode(depth['bids'][0][0], counter),
+                'ma5min':dataNode(MA_5min, counter),
+                'ma10min':dataNode(MA_10min, counter)
+            }
 
-            print('kline 5min')
-            arr5min = okcoinSpot.kline(symbol, '1min')[-6:-1]
-            aveClose = np.mean(arr5min, axis=0)[-2]  # timestamp, open, high, low, close, vol
-            print(aveClose)
-            print(arr5min)
-            print('finish...\n')
+            df = pd.DataFrame(data)
+
+            hasHead = counter == 0
+            with open("okcoin ltc sampling.csv", "a+") as f:
+                df.to_csv(f, header=hasHead)
+
+            # print('kline 5min')
+            # arr5min = okcoinSpot.kline(symbol, '1min')[-6:-1]
+            # aveClose = np.mean(arr5min, axis=0)[-2]  # timestamp, open, high, low, close, vol
+            # print(aveClose)
+            # print(arr5min)
+            print('tick end...\n')
+            counter += 1
         except Exception:
             dummy = 0
         time.sleep(oneTick)

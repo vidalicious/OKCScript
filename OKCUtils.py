@@ -4,31 +4,13 @@
 from HttpMD5Util import *
 from OkcoinFutureAPI import *
 from OkcoinSpotAPI import *
+import pandas as pd
 
-def getLastPrice(spot, symbol):
-    info = spot.ticker(symbol)
-    if info is not None:
-        ticker = info['ticker']
-        if ticker is not None:
-            return ticker['last']
-    return None
-
-def getBuy1(spot, symbol):
-    info = spot.ticker(symbol)
-    if info is not None:
-        ticker = info['ticker']
-        if ticker is not None:
-            return ticker['buy']
-    return None
-
-def getSell1(spot, symbol):
-    info = spot.ticker(symbol)
-    if info is not None:
-        ticker = info['ticker']
-        if ticker is not None:
-            return ticker['sell']
-    return None
-
+def dataNode(data, index):
+    lData = [data]
+    lIndex = [index]
+    s = pd.Series(lData, index=lIndex)
+    return s
 
 # ====================================================================
 def updateEMABy(currentValue, ema_K, lastMean):

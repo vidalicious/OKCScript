@@ -46,7 +46,7 @@ def sampler():
             df = pd.DataFrame(data)
 
             hasHead = counter == 0
-            with open("okcoin ltc sampling20170920.csv", "a+") as f:
+            with open("okcoin ltc sampling20170922.csv", "a+") as f:
                 df.to_csv(f, header=hasHead)
 
             # print('kline 5min')
